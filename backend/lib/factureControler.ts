@@ -23,6 +23,7 @@ export class FactureControler {
             return this.res.status(422).json({ errors: errors.array() })
             }
             MongoClient.connect(dbUrl, this.checkConnectToDb)
+            
         }
 
     public checkConnectToDb (err:any, client:any){
