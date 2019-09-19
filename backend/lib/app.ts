@@ -1,11 +1,13 @@
 import {FactureControler} from './factureControler'
-import { Request, Response } from "express";
-import express = require('express');
-import bodyParser = require("body-parser");
-import helmet = require('helmet')
+import { Request, Response, response } from "express";
+import express from 'express';
+import bodyParser from 'body-parser';
+import helmet from 'helmet';
 const fs = require("fs");
 const PDFDocument = require("pdfkit");
-
+import async from 'async';
+import main from './mail';
+import sendEmail from './sengridMail';
 
 // Create a new express application instance
 const app: express.Application = express();
@@ -27,7 +29,7 @@ app.use(function (req, res, next) {
   res.send('hello world')
 })
 
-app.post("/facture" ,[
+app.post('/facture' ,[
     check('name').not().isEmpty().withMessage('Name must have at least three characters').isLength({min: 3}),
     check('surName').not().isEmpty().withMessage('Surname must have at least three characters').isLength({min: 3}),
     check('netto').not().isEmpty(),
@@ -39,15 +41,45 @@ app.post("/facture" ,[
     return facture.saveForm();
   });
 
-app.get("/test",(req:Request,res:Response)=> {
+app.get('/test',(req:Request,res:Response)=> {
   let doc = new PDFDocument({ margin: 50 });
 
   doc.end();
-  doc.pipe(fs.createWriteStream("test.pdf"));
+  doc.pipe(fs.createWriteStream("facture.pdf"));
+    res.status(200).send("ok");
+});
+
+
+app.post('/nodemail', (req:Request, res:Response)=> {
+    main()
     res.status(200).send("ok");
 })
+
+app.post('/mail', function (req:any, res:any, next:any) {
+    async.parallel([
+      function (callback:any) {
+        sendEmail(
+          callback,
+          'Myemail',
+          ['emailSendTo'],
+          'Subject Line',
+          'Text Content',
+          '<p style="font-size: 32px;">HTML Content</p>',
+           false
+        );
+      }
+    ], function(err:any, results:any) {
+      res.send({
+        success: true,
+        message: 'Emails sent',
+        successfulEmails: results[0].successfulEmails,
+        errorEmails: results[0].errorEmails,
+      });
+    });
+ });
  
 app.listen(8020, function () { 
-   console.log('Example app listening on port 8010!');
+   console.log('Example app listening on port 8020!');
 });
+
 
