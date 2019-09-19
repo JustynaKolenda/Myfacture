@@ -3,6 +3,8 @@ import { Request, Response } from "express";
 import express = require('express');
 import bodyParser = require("body-parser");
 import helmet = require('helmet')
+const fs = require("fs");
+const PDFDocument = require("pdfkit");
 
 
 // Create a new express application instance
@@ -35,8 +37,17 @@ app.post("/facture" ,[
   (req: Request, res: Response)=>{
     const facture = new FactureControler(res, req);
     return facture.saveForm();
-  }) 
+  });
+
+app.get("/test",(req:Request,res:Response)=> {
+  let doc = new PDFDocument({ margin: 50 });
+
+  doc.end();
+  doc.pipe(fs.createWriteStream("test.pdf"));
+    res.status(200).send("ok");
+})
  
-app.listen(8010, function () { 
+app.listen(8020, function () { 
    console.log('Example app listening on port 8010!');
 });
+

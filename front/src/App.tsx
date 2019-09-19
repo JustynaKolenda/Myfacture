@@ -1,26 +1,26 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Factur from './Factur';
 
-const App: React.FC = () => {
+class App extends React.Component{
+  render(){
+    const data = [
+      { name: "John", surName: "Smath" },
+      { name: "Paul", surName: "Smeth" },
+      { name: "Cody", surName: "Smith" },
+      { name: "Jordan", surName: "Smoth" },
+      { name: "Jim", surName: "Smuth" },
+    ]
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="pdf">
+      {
+            data.map(facture => <Factur facture={facture} key={facture.surName}/>)
+          }  
+      </div> 
     </div>
   );
 }
-
+}
 export default App;
