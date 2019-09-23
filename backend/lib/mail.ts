@@ -1,30 +1,29 @@
 const nodemailer = require('nodemailer');
 
-async function main() {
+async function mail() {
     let testAccount = await nodemailer.createTestAccount();
-    var dateFormat = require('dateformat');
-    var now = new Date();
-    dateFormat(now, "mmmm");
+    const now = new Date();
+    const months = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
     
 
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-               user: 'myadressEmail',
-               pass: 'myPassword'
+               user: 'myMail',
+               pass: 'Mypassword'
            }
     });
 
     let info = await transporter.sendMail({
-        from: '"Faktury" <myadressEmail>', // sender address
-        to: 'emailToSend', // list of receivers
-        subject: `"[UOD][RACHUNEK]"<Justyna><Kolenda>`+`${now.toDateString()}`, // Subject line
-        text: `"Fakture przesłano z "`+`${"myadressEmail"}`, // plain text body
-        html: `<b>Fakture przesłano z `+`${"myadressEmail"}</b>`, // html body
+        from: '"Faktury" <myMail>', // sender address
+        to: 'mailWheresend', // list of receivers
+        subject: `"[UOD][RACHUNEK]" ${'Justyna Kolenda'} ${months[now.getMonth()]}`, // Subject line
+        text: `"Fakture przesłano z "`+`${"myMail"}`, // plain text body
+        html: `<b>Fakture przesłano z `+`${"myMail"}</b>`, // html body
         attachments: [{
             filename: 'faktura.pdf',
-            path: './test.pdf' 
+            path: './facture.pdf' 
         }]
     });
 
@@ -32,6 +31,6 @@ async function main() {
     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 }
 
-main().catch(console.error);
+mail().catch(console.error);
 
-export default main;
+export default mail;

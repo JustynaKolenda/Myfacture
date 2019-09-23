@@ -1,7 +1,7 @@
   const Factures = require ('./factureModel');
 const express = require('express');
 const FactureRouter = express.Router();
-const PDFDocument = require('pdfkit')
+import PDFDocument from 'pdfkit'
  
 
 FactureRouter.route('/create').post(function (req: any, res: any) {

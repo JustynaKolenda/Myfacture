@@ -21,4 +21,4 @@ const Facture = new Schema({
     collection: 'facturs'
 });
 
-module.exports = mongoose.model('Facture', Facture);
+export default Facture;
