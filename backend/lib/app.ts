@@ -57,33 +57,6 @@ app.post('/createPdf',
     res.status(200).send("ok");
   });
 
-// app.post('/mail', (req:Request, res:Response)=> {
-//     mail();
-//     res.status(200).send("ok");
-// })
-
-// app.post('/mail', function (req:any, res:any, next:any) {
-//     async.parallel([
-//       function (callback:any) {
-//         sendEmail(
-//           callback,
-//           'Myemail',
-//           ['emailSendTo'],
-//           'Subject Line',
-//           'Text Content',
-//           '<p style="font-size: 32px;">HTML Content</p>',
-//            false
-//         );
-//       }
-//     ], function(err:any, results:any) {
-//       res.send({
-//         success: true,
-//         message: 'Emails sent',
-//         successfulEmails: results[0].successfulEmails,
-//         errorEmails: results[0].errorEmails,
-//       });
-//     });
-//  });
  
 app.listen(8030, function () { 
    console.log('Example app listening on port 8030!');
