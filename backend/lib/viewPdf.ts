@@ -1,14 +1,10 @@
-// import invoice from './pdfTry'
-
-function generateHeader(doc:any) {
+export function generateHeader(doc:any) {
     doc
-    //   .image("logo.png", 50, 45, { width: 50 })
       .fillColor("#444444")
       .fontSize(20)
       .text("ACME Inc.", 110, 57)
       .fontSize(10)
-      .text("123 Main Street", 200, 65, { align: "right" })
-      .text("New York, NY, 10025", 200, 80, { align: "right" })
+      .text("Kraków", 200, 65, { align: "right" })
       .moveDown();
   }
   
@@ -51,3 +47,6 @@ function generateHeader(doc:any) {
       );
     }
   }
+
+
+  export default generateHeader;

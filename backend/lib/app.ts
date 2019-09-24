@@ -1,14 +1,12 @@
-import {FactureControler} from './factureControler'
+// import {FactureControler} from './factureControler'
 import { Request, Response, response } from "express";
 import express from 'express';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
-const fs = require("fs");
+import fs from 'fs';
 import PDFDocument from 'pdfkit';
-import async from 'async';
 import mail from './mail';
-import sendEmail from './sengridMail';
-import Facture from './factureModel';
+
 
 
 // Create a new express application instance
@@ -23,40 +21,35 @@ app.use(function (req, res, next) {
 
   next();
 });
-
- app.use(express.json());
   
+ app.post('/facture',[
+    check('name').not().isEmpty().withMessage('Name must have at least three characters').isLength({min: 3}),
+    check('surName').not().isEmpty().withMessage('Surname must have at least three characters').isLength({min: 3}),
+    check('netto').not().isEmpty(),
+    check('date','Chose your date ').not().isEmpty().optional().isISO8601('dd-mm-yyyy'),
+    check('title').not().isEmpty().withMessage('Facture nead title').isLength({min: 2})
+  ],
+    (req:Request,res:Response)=> {
+      const doc = new PDFDocument({margin : 100});
+      const netto = req.body.netto;
+      const name = req.body.name;
+      const surName = req.body.surName;
+      const date = req.body.date;
+      const title = req.body.title;
+      doc.pipe(fs.createWriteStream("facture.pdf"));
+      doc.fontSize(20).text(title, 100,100).text(netto, 150, 150).text(name, 200, 200).text(surName, 250, 250).text(date, 200, 80, { align: "right" });
+      doc.end(); 
+      //mail słuzy do wysyłki maila
+      mail();
+      res.status(200).send("ok");
+ });
+
+
  app.get('/' ,function (req, res) {
   res.send('hello world')
   req.body;
 
 })
-
-app.post('/facture' ,[
-    check('name').not().isEmpty().withMessage('Name must have at least three characters').isLength({min: 3}),
-    check('surName').not().isEmpty().withMessage('Surname must have at least three characters').isLength({min: 3}),
-    check('netto').not().isEmpty(),
-    check('date','Chose your date ').not().isEmpty().optional(),
-    check('title').not().isEmpty().withMessage('Facture nead title').isLength({min: 2})
-  ],
-  (req: Request, res: Response)=>{
-   const facture = new FactureControler(res, req);
-    //console.log(req.body)
-    return console.log(res.json(facture))
-  });
-
-
-app.post('/createPdf',
-  (req:Request,res:Response)=> {
-    const doc = new PDFDocument({margin : 100});
-    doc.pipe(fs.createWriteStream("facture.pdf"));
-    doc.fontSize(25).text('dodano tekst', 100,100);
-    doc.end(); 
-    //mail słuzy do wysyłki maila
-    mail();
-    res.status(200).send("ok");
-  });
-
  
 app.listen(8030, function () { 
    console.log('Example app listening on port 8030!');
