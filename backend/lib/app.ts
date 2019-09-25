@@ -6,7 +6,7 @@ import helmet from 'helmet';
 import fs from 'fs';
 import PDFDocument from 'pdfkit';
 import mail from './mail';
-
+import {generateHeader, generateFooter} from './viewPdf';
 
 
 // Create a new express application instance
@@ -37,7 +37,9 @@ app.use(function (req, res, next) {
       const date = req.body.date;
       const title = req.body.title;
       doc.pipe(fs.createWriteStream("facture.pdf"));
-      doc.fontSize(20).text(title, 100,100).text(netto, 150, 150).text(name, 200, 200).text(surName, 250, 250).text(date, 200, 80, { align: "right" });
+      generateHeader(doc)
+      doc.fontSize(10).text(title, 100,100).text(netto, 150, 100).text(name, 300, 100).text(surName, 300, 150).text(date, 200, 80, { align: "right" });
+      generateFooter(doc)
       doc.end(); 
       //mail słuzy do wysyłki maila
       mail();

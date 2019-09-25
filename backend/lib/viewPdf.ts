@@ -2,13 +2,13 @@ export function generateHeader(doc:any) {
     doc
       .fillColor("#444444")
       .fontSize(20)
-      .text("ACME Inc.", 110, 57)
+      .text("KolendaTeam.", 110, 57)
       .fontSize(10)
-      .text("Kraków", 200, 65, { align: "right" })
+      .text("Kraków,", 200, 65, { align: "right" })
       .moveDown();
   }
   
-  function generateFooter(doc:any) {
+export function generateFooter(doc:any) {
     doc
       .fontSize(10)
       .text(
@@ -49,4 +49,4 @@ export function generateHeader(doc:any) {
   }
 
 
-  export default generateHeader;
+  export default { generateHeader, generateFooter};

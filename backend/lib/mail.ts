@@ -10,24 +10,24 @@ async function mail() {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-               user: 'MyEmail',
-               pass: 'myPassword'
+               user: 'myEmail',
+               pass: 'myPasword'
            }
     });
 
     let info = await transporter.sendMail({
-        from: '"Faktury" <MyEmail>', // sender address
+        from: '"Faktury" <myEmail>', // sender address
         to: 'emailWherSend', // list of receivers
         subject: `"[UOD][RACHUNEK]" ${'Justyna Kolenda'} ${months[now.getMonth()]}`, // Subject line
-        text: `"Fakture przesłano z "`+`${"MyEmail"}`, // plain text body
-        html: `<b>Fakture przesłano z `+`${"MyEmail"}</b>`, // html body
+        text: `"Fakture przesłano z "`+`${"myEmail"}`, // plain text body
+        html: `<b>Fakture przesłano z `+`${"myEmail"}</b>`, // html body
         attachments: [{
             filename: 'faktura.pdf',
             path: './facture.pdf' 
         }]
     });
 
-    console.log('Message sent: %s', info.messageId);
+    console.log('Message send: %s', info.messageId);
     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 }
 
