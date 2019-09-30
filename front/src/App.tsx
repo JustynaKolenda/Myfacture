@@ -1,26 +1,17 @@
 import React from 'react';
-import './App.css';
+import './css/App.scss';
+import './css/reset.css';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 import Factur from './Factur';
 
 class App extends React.Component{
   render(){
-    const data = [
-      { name: "John", surName: "Smath" },
-      { name: "Paul", surName: "Smeth" },
-      { name: "Cody", surName: "Smith" },
-      { name: "Jordan", surName: "Smoth" },
-      { name: "Jim", surName: "Smuth" },
-    ]
 
-  return (
-    <div className="App">
-      <div className="pdf">
-      {
-            data.map(facture => <Factur facture={facture} key={facture.surName}/>)
-          }  
-      </div> 
-    </div>
-  );
+    return (
+      <Router>
+          <Route exact path={'/'} component={Factur} />
+      </Router>
+    );
 }
 }
 export default App;
