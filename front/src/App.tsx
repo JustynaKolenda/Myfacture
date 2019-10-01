@@ -1,6 +1,7 @@
 import React from 'react';
 import './css/App.scss';
 import './css/reset.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import Factur from './Factur';
 
