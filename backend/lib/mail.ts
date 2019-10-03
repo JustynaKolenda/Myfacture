@@ -11,13 +11,13 @@ async function mail() {
         service: 'gmail',
         auth: {
                user: 'myemail',
-               pass: 'mypasword'
+               pass: 'mypassword'
            }
     });
 
     let info = await transporter.sendMail({
-        from: '"Faktury" <myemail@gmail.com>', // sender address
-        to: 'mailWherSend', // list of receivers
+        from: '"Faktury" <myemail>', // sender address
+        to: 'emailWherSend', // list of receivers
         subject: `"[UOD][RACHUNEK]" ${'Justyna Kolenda'} ${months[now.getMonth()]}`, // Subject line
         text: `"Fakture przesłano z "`+`${"myemail"}`, // plain text body
         html: `<b>Fakture przesłano z `+`${"myemail"}</b>`, // html body
@@ -27,8 +27,8 @@ async function mail() {
         }]
     });
 
-    console.log('Message send: %s', info.messageId);
-    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    // console.log('Message send: %s', info.messageId);
+    // console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 }
 
 

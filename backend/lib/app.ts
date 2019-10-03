@@ -7,7 +7,7 @@ import fs from 'fs';
 import PDFDocument from 'pdfkit';
 import mail from './mail';
 import {generateHeader, generateFooter} from './viewPdf';
-
+import {FactureControler} from './FactureControler'
 
 // Create a new express application instance
 const app: express.Application = express();
@@ -26,7 +26,7 @@ app.use(function (req, res, next) {
     check('name').not().isEmpty().withMessage('Name must have at least three characters').isLength({min: 3}),
     check('surName').not().isEmpty().withMessage('Surname must have at least three characters').isLength({min: 3}),
     check('netto').not().isEmpty(),
-    check('date','Chose your date ').not().isEmpty().optional().isISO8601('dd-mm-yyyy'),
+    check('date','Chose your date ').not().isEmpty().optional('dd-mm-yyyy'),
     check('title').not().isEmpty().withMessage('Facture nead title').isLength({min: 2})
   ],
     (req:Request,res:Response)=> {
@@ -43,7 +43,8 @@ app.use(function (req, res, next) {
       doc.end(); 
       //mail słuzy do wysyłki maila
       mail();
-      res.status(200).send("ok");
+      const send = new FactureControler(res, req);
+      return send.saveForm();
  });
 
 
@@ -53,8 +54,8 @@ app.use(function (req, res, next) {
 
 })
  
-app.listen(8030, function () { 
-   console.log('Example app listening on port 8030!');
+app.listen(8000, function () { 
+   console.log('Example app listening on port 8000!');
 });
 
 
