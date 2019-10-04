@@ -3,14 +3,12 @@ import { Request, Response, response } from "express";
 import express from 'express';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
-import fs from 'fs';
-import PDFDocument from 'pdfkit';
 import mail from './mail';
-import {generateHeader, generateFooter} from './viewPdf';
-import {FactureControler} from './FactureControler'
+import {FactureControler} from './FactureControler';
+import {FactureValidation} from './FactureValidation';
+import {CreatePdf} from './CreatePdf';
 
 const app: express.Application = express();
-const { check } = require('express-validator');
 app.use(helmet())
 app.use(bodyParser.json());
 app.use(function (req, res, next) {
@@ -19,27 +17,12 @@ app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type');
 
   next();
-});
-  
- app.post('/facture',[
-    check('name').not().isEmpty().withMessage('Name must have at least three characters').isLength({min: 3}),
-    check('surName').not().isEmpty().withMessage('Surname must have at least three characters').isLength({min: 3}),
-    check('netto').not().isEmpty(),
-    check('date','Chose your date ').not().isEmpty().optional('dd-MM-yyyy'),
-    check('title').not().isEmpty().withMessage('Facture nead title').isLength({min: 2})
-  ],
+}); 
+
+app.post('/facture', FactureValidation,
     (req:Request,res:Response)=> {
-      const doc = new PDFDocument({margin : 100});
-      const netto = req.body.netto;
-      const name = req.body.name;
-      const surName = req.body.surName;
-      const date = req.body.date;
-      const title = req.body.title;
-      doc.pipe(fs.createWriteStream("facture.pdf"));
-      generateHeader(doc)
-      doc.fontSize(10).text(title, 100,100).text(netto, 150, 100).text(name, 300, 100).text(surName, 300, 150).text(date, 200, 80, { align: "right" });
-      generateFooter(doc)
-      doc.end(); 
+      const creat = new CreatePdf(res,req);
+      creat.create();
       mail();
       const send = new FactureControler(res, req);
       return send.saveForm();

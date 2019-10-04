@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import mongodb = require("mongodb")
+import mongodb from 'mongodb';
 import MongoClient = mongodb.MongoClient;
 
 export class FactureControler {

@@ -1,14 +1,14 @@
-export function generateHeader(doc:any) {
+export function generateHeader(doc:PDFKit.PDFDocument) {
     doc
       .fillColor("#444444")
       .fontSize(20)
-      .text("KolendaTeam.", 110, 57)
+      .text("KolendaTeam", 110, 57)
       .fontSize(10)
       .text("Kraków,", 200, 65, { align: "right" })
       .moveDown();
   }
   
-export function generateFooter(doc:any) {
+export function generateFooter(doc:PDFKit.PDFDocument) {
     doc
       .fontSize(10)
       .text(
@@ -19,7 +19,7 @@ export function generateFooter(doc:any) {
       );
   }
 
-  function generateTableRow(doc:any, y:any, c1:any, c2:any, c3:any, c4:any, c5:any) {
+  function generateTableRow(doc:PDFKit.PDFDocument, y:number, c1:string, c2:string, c3:any, c4:string, c5:string) {
     doc
       .fontSize(10)
       .text(c1, 50, y)
@@ -29,7 +29,7 @@ export function generateFooter(doc:any) {
       .text(c5, 0, y, { align: "right" });
   }
 
-  function generateInvoiceTable(doc:any, invoice:any) {
+  function generateInvoiceTable(doc:PDFKit.PDFDocument, invoice:any) {
     let i,
       invoiceTableTop = 330;
   
