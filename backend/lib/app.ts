@@ -1,12 +1,11 @@
-// import {FactureControler} from './factureControler'
-import { Request, Response, response } from "express";
+import { Request, Response } from "express";
 import express from 'express';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import mail from './mail';
 import {FactureControler} from './FactureControler';
 import {FactureValidation} from './FactureValidation';
-import {CreatePdf} from './CreatePdf';
+import {CreatePdf} from './CreatePdf';;
 
 const app: express.Application = express();
 app.use(helmet())
@@ -20,7 +19,7 @@ app.use(function (req, res, next) {
 }); 
 
 app.post('/facture', FactureValidation,
-    (req:Request,res:Response)=> {
+  (req:Request,res:Response)=> {
       const creat = new CreatePdf(res,req);
       creat.create();
       mail();
