@@ -1,12 +1,14 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+dotenv.config();
 
 async function mail() {
     let testAccount = await nodemailer.createTestAccount();
     const now = new Date();
     const months = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
-    const myEmail = 'mail';
-    const myPassword = 'password';
-    let emailWhereSend = 'mail';
+    const myEmail = process.env.MY_EMAIL;
+    const myPassword = process.env.MY_PASSWORD;
+    let emailWhereSend = process.env.EMAIL_WHER_SEND;
     
 
 
@@ -20,7 +22,7 @@ async function mail() {
     });
 
     let info = await transporter.sendMail({
-        from: `"Faktury" ${transporter.user}`, // sender address
+        from: `"Faktury" ${myEmail}}`, // sender address
         to: emailWhereSend, // list of receivers
         subject: `"[UOD][RACHUNEK]" ${'Justyna Kolenda'} ${months[now.getMonth()]}`, // Subject line
         text: `"Fakture przesłano z "`+`${myEmail}`, // plain text body
@@ -30,7 +32,6 @@ async function mail() {
             path: './facture.pdf' 
         }]
     });
-
 }
 
 

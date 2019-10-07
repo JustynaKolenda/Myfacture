@@ -1,11 +1,11 @@
-import { Request, Response } from "express";
 import express from 'express';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
-import mail from './mail';
-import {FactureControler} from './FactureControler';
 import {FactureValidation} from './FactureValidation';
-import {CreatePdf} from './CreatePdf';;
+import {SendFacture} from './SendFacture';
+import dotenv from 'dotenv';
+dotenv.config();
+
 
 const app: express.Application = express();
 app.use(helmet())
@@ -18,24 +18,15 @@ app.use(function (req, res, next) {
   next();
 }); 
 
-app.post('/facture', FactureValidation,
-  (req:Request,res:Response)=> {
-      const creat = new CreatePdf(res,req);
-      creat.create();
-      mail();
-      const send = new FactureControler(res, req);
-      return send.saveForm();
- });
+app.post('/facture', FactureValidation, SendFacture);
 
-
- app.get('/' ,function (req, res) {
+app.get('/' ,function (req, res) {
   res.send('hello world')
   req.body;
-
 })
  
-app.listen(8000, function () { 
-   console.log('Example app listening on port 8000!');
+app.listen(process.env.MY_PORT, function () { 
+   console.log('Example app listening on port 8000');
 });
 
 

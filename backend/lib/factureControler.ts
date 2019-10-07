@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import mongodb from 'mongodb';
 import MongoClient = mongodb.MongoClient;
+import dotenv from 'dotenv';
+dotenv.config();
 
 export class FactureControler {
     res: Response;
@@ -15,7 +17,7 @@ export class FactureControler {
     }
 
     public saveForm () {
-        const  dbUrl = "mongodb://localhost:27017/Myfacturs";
+        const  dbUrl = (process.env.DB_MONGO as string);
         const { validationResult } = require('express-validator');
 
             const errors = validationResult(this.req)

@@ -1,6 +1,13 @@
 import * as React from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+export interface SendForm{ 
+  date: Date,
+  title: string,
+  name: string,
+  surName: string,
+  netto: number
+}
 
 type FactureS = {
   date: Date,
@@ -20,34 +27,13 @@ export class Factur extends React.Component<any,FactureS> {
   };
   constructor(props:any){
     super(props)
-    this.submitting = this.submitting.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleLastNameChange = this.handleLastNameChange.bind(this);
     this.handleNettoChange = this.handleNettoChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
-
-
-    public submitting (){
-      return fetch('http://localhost:8000/facture', {
-        method: 'POST',
-        body: JSON.stringify(this.state),
-        headers: {
-            'Content-Type': 'application/json',
-        }  
-    })
-      .then(res => res.json())
-      .then(res => {
-        console.log(res);
-        if(res !== 200){
-          return console.log("dddd")
-        }
-      })
-      .catch(error => console.log("Błąd: ", error));
-      
-
-    }
 
     public handleNameChange = (e:any) => {
       this.setState({
@@ -74,13 +60,14 @@ export class Factur extends React.Component<any,FactureS> {
         date: date
       });
     };
-
+    
+    public handleSubmit(){
+      this.props.onSubmit(this.state);
+    }
 
   render(){
-    const { handleSubmit, submitting } = this.props;
-   
     return (
-        <form onSubmit={handleSubmit} className="form-group col-6 container">
+        <form onSubmit={this.handleSubmit} className="form-group col-6 container">
           <h1>Utwórz fakture</h1>
           <div>
               <label className="col-lg-2 offset-xs-1">Tytuł</label>
@@ -109,7 +96,7 @@ export class Factur extends React.Component<any,FactureS> {
                 />
             </div>
             <div className="form-group">
-            <button color="info" className="col-lg-2 offset-xs-1" type="submit" id={"buttonSend"} disabled={submitting} onClick={this.submitting}>Send</button>
+            <button color="info" className="col-lg-2 offset-xs-1" type="submit" id={"buttonSend"} >Send</button>
             </div>
         </form>
     )
