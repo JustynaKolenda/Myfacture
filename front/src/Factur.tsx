@@ -1,6 +1,7 @@
 import * as React from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+
 export interface SendForm{ 
   date: Date,
   title: string,
@@ -33,7 +34,31 @@ export class Factur extends React.Component<any,FactureS> {
     this.handleNettoChange = this.handleNettoChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.validation = this.validation.bind(this);
   }
+
+    public validation(){
+      const { date, title, name, surName, netto} = this.state;
+
+      if(title.length === 0){
+        console.log("brak danych")
+        return true
+      } else if(name.length === 0){
+        console.log("brak danych")
+        return true
+      } else if(surName.length === 0){
+        console.log("brak danych")
+        return true
+      } else if(netto === 0){
+        console.log("brak danych")
+        return true
+      }else if(date === null){
+        console.log("brak danych")
+        return true
+      } else {
+        return false
+      }
+    }
 
     public handleNameChange = (e:any) => {
       this.setState({
@@ -44,6 +69,7 @@ export class Factur extends React.Component<any,FactureS> {
       this.setState({
         title: e.target.value
       });
+        
     }
     public handleLastNameChange = (e:any) => {
       this.setState({
@@ -61,8 +87,13 @@ export class Factur extends React.Component<any,FactureS> {
       });
     };
     
-    public handleSubmit(){
-      this.props.onSubmit(this.state);
+    public handleSubmit(e:any){
+      e.preventDefault();
+      if(this.validation() === true){
+         console.log("błąd")
+      } else{
+          return this.props.onSubmit(this.state);
+      }
     }
 
   render(){
@@ -71,24 +102,23 @@ export class Factur extends React.Component<any,FactureS> {
           <h1>Utwórz fakture</h1>
           <div>
               <label className="col-lg-2 offset-xs-1">Tytuł</label>
-              <input required placeholder={'podaj tytuł'} value={this.state.title} onChange={this.handleTitleChange}></input>
+              <input placeholder={'podaj tytuł'} value={this.state.title} onChange={this.handleTitleChange}></input>
             </div>
             <div>
               <label className="col-lg-2 offset-xs-1">Imię</label>
-              <input required placeholder={'podaj imie'} value={this.state.name} onChange={this.handleNameChange}></input>
+              <input  placeholder={'podaj imie'} value={this.state.name} onChange={this.handleNameChange}></input>
             </div>
             <div>
               <label className="col-lg-2 offset-xs-1">Nazwisko</label>
-              <input required placeholder={'podaj nazwisko'} value={this.state.surName} onChange={this.handleLastNameChange} ></input>
+              <input placeholder={'podaj nazwisko'} value={this.state.surName} onChange={this.handleLastNameChange} ></input>
             </div>
             <div>
               <label className="col-lg-2 offset-xs-1">Kwota netto</label>
-              <input required placeholder={'podaj kwota netto'} value={this.state.netto}  onChange={this.handleNettoChange}></input>
+              <input placeholder={'podaj kwota netto'} value={this.state.netto}  onChange={this.handleNettoChange}></input>
             </div>
             <div className="form-group">
               <label className="col-lg-2 offset-xs-1">Data faktury</label>
                 <DatePicker
-                  required
                   selected={this.state.date}
                   onChange={this.handleChange}
                   name="startDate"

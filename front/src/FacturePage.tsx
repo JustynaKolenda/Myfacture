@@ -18,7 +18,8 @@ export class FacturePage extends React.Component<any,any>{
   })
     .then(res => res.json())
     .then(res => {
-      console.log(res);
+      console.log(res.body);
+      console.log(res.status)
     })
     .catch(error => console.log("Błąd: ", error));
   }
