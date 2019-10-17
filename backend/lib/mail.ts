@@ -28,7 +28,7 @@ async function mail() {
         text: `"Fakture przesłano z "`+`${myEmail}`, // plain text body
         html: `<b>Fakture przesłano z `+`${myEmail}</b>`, // html body
         attachments: [{
-            filename: 'faktura.pdf',
+            filename: 'faktura.pdf', 
             path: './facture.pdf' 
         }]
     });

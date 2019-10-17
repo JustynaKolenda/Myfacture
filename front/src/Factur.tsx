@@ -1,6 +1,7 @@
 import * as React from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment'
 
 export interface SendForm{ 
   factur: {
@@ -128,10 +129,11 @@ export class Factur extends React.Component<any,FactureS> {
     }
     
     public handleSubmit(e:any){
-      
+      e.preventDefault();
       if(this.validation()){
         return this.props.onSubmit(this.state.factur);
-      }   e.preventDefault();
+      }  
+       
   }
 
   render(){
@@ -164,6 +166,7 @@ export class Factur extends React.Component<any,FactureS> {
                   selected={this.state.factur.date}
                   onChange={this.handleChange}
                   name="startDate"
+                  // dateFormat={moment().format("MMM Do YY")}
                   dateFormat= 'dd-MM-yyyy'
                 />
                 {this.state.errors.date ? <div className="facture">Zła data</div> : <div></div>}

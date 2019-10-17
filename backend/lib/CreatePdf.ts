@@ -1,11 +1,11 @@
 import fs from 'fs';
 import PDFDocument from 'pdfkit';
-import {generateHeader, generateFooter} from './viewPdf';
+import {generateHeader, generateCustomerInformation, generateFooter} from './viewPdf';
 import { Request, Response } from "express";
 
 export class CreatePdf {
     res: Response;
-    req: Request;
+    req: Request; 
     client: any;
     constructor(response: Response, request: Request){
         this.res = response;
@@ -20,10 +20,13 @@ export class CreatePdf {
         const surName = this.req.body.surName;
         const date = this.req.body.date;
         const title = this.req.body.title;
-        doc.pipe(fs.createWriteStream("facture.pdf"));
+        const factur = this.req.body
+
         generateHeader(doc)
-        doc.fontSize(10).text(title, 100,100).text(netto, 150, 100).text(name, 300, 100).text(surName, 300, 150).text(date, 200, 80, { align: "right" });
+        generateCustomerInformation(doc, factur)
+        // doc.fontSize(10).text(title, 100,100).text(netto, 200, 200).text(name, 300, 300).text(surName, 300, 400).text(date, 200, 80, { align: "right" });
         generateFooter(doc)
+        doc.pipe(fs.createWriteStream("facture.pdf"));
         doc.end(); 
     }
 }
