@@ -54,7 +54,7 @@ export  function generateCustomerInformation(doc:PDFKit.PDFDocument, factur:Mode
     .font("Helvetica")
     .text("Data wystawienia: ", 50, customerInformationTop + 15)
     .text(`${(moment(factur.date).format("DD-MM-YYYY"))}`, 150, customerInformationTop + 15)
-    // .text(formatDate(factur.date), 150, customerInformationTop + 15)
+    
     .text(`Kwota faktury:`, 50, customerInformationTop + 30)
     .text(
       `${factur.netto}`,
